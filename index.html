@@ -14,15 +14,15 @@
     --bg-card:#1B2C27;
     --line: rgba(255,255,255,0.08);
     --line-strong: rgba(255,255,255,0.16);
-    --teal-50:#E1F5EE;
-    --teal-100:#9FE1CB;
-    --teal-200:#5DCAA5;
-    --teal-400:#1D9E75;
-    --teal-600:#0F6E56;
-    --coral-100:#F5C4B3;
-    --coral-200:#F0997B;
-    --coral-400:#D85A30;
-    --coral-600:#993C1D;
+    --teal-50:#E8EEE2;
+    --teal-100:#C3D3B3;
+    --teal-200:#8FB6E8;
+    --teal-400:#4D9FE8;
+    --teal-600:#5B6B43;
+    --coral-100:#D9C9A8;
+    --coral-200:#C4B07A;
+    --coral-400:#9A8552;
+    --coral-600:#6E5E3A;
     --text-hi:#F4F1EA;
     --text-mid: rgba(244,241,234,0.72);
     --text-low: rgba(244,241,234,0.46);
@@ -109,6 +109,15 @@
     margin-top:24px; font-size:18px; color:var(--text-mid);
     max-width:560px;
   }
+  .hero-top{display:flex; gap:48px; align-items:flex-start; flex-wrap:wrap;}
+  .hero-copy{flex:1; min-width:320px;}
+  .avatar{
+    flex:0 0 auto; width:200px; height:200px; border-radius:18px;
+    overflow:hidden; border:1px solid var(--line-strong);
+  }
+  .avatar img{width:100%; height:100%; object-fit:cover; display:block;}
+  @media (max-width:760px){ .hero-top{flex-direction:column-reverse;} .avatar{width:140px; height:140px;} }
+
   .hero-actions{display:flex; gap:16px; margin-top:40px; flex-wrap:wrap;}
   .btn{
     font-family:var(--body); font-weight:500; font-size:14px;
@@ -340,16 +349,21 @@
 
 <header class="hero">
   <div class="wrap">
-    <div class="eyebrow">Android developer · Kotlin &amp; Java</div>
-    <h1>Native Android apps, built layer by <span class="accent">layer</span>.</h1>
-    <p class="lead">
-      I design and build Android applications with MVVM and Clean Architecture —
-      from the data layer up to the screen. Top Achiever, Route Academy Android
-      Development Diploma. B.Sc. Computer Science &amp; AI, Cairo University.
-    </p>
-    <div class="hero-actions">
-      <a class="btn btn-primary" href="#work">View projects</a>
-      <a class="btn btn-ghost" href="#contact">Get in touch</a>
+    <div class="hero-top">
+      <div class="hero-copy">
+        <div class="eyebrow">Android developer · Kotlin &amp; Java</div>
+        <h1>Native Android apps, built layer by <span class="accent">layer</span>.</h1>
+        <p class="lead">
+          I design and build Android applications with MVVM and Clean Architecture —
+          from the data layer up to the screen. Top Achiever, Route Academy Android
+          Development Diploma. B.Sc. Computer Science &amp; AI, Cairo University.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#work">View projects</a>
+          <a class="btn btn-ghost" href="#contact">Get in touch</a>
+        </div>
+      </div>
+      <div class="avatar"><img src="avatar.jpeg" alt="Illustrated avatar of Noran Sayed as an Android developer"></div>
     </div>
 
     <div class="device-row">
@@ -557,7 +571,7 @@
 
     <div class="timeline reveal">
       <div class="tl-item">
-        <div class="tl-meta">2024 — May 2026</div>
+        <div class="tl-meta">January — May 2026</div>
         <h3>Android Development Diploma, Route Academy</h3>
         <p>An intensive, hands-on diploma covering Kotlin, Java and the full Android SDK ecosystem — MVVM, Jetpack libraries, Retrofit, Room, Hilt, Coroutines, Firebase and performance optimisation, plus HTML5, CSS3 and JavaScript for cross-platform awareness.</p>
         <span class="badge">Top achiever</span>
