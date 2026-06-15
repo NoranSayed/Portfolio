@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Noran Sayed — Android Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0F1714;
+    --bg-elev:#162420;
+    --bg-card:#1B2C27;
+    --line: rgba(255,255,255,0.08);
+    --line-strong: rgba(255,255,255,0.16);
+    --teal-50:#E1F5EE;
+    --teal-100:#9FE1CB;
+    --teal-200:#5DCAA5;
+    --teal-400:#1D9E75;
+    --teal-600:#0F6E56;
+    --coral-100:#F5C4B3;
+    --coral-200:#F0997B;
+    --coral-400:#D85A30;
+    --coral-600:#993C1D;
+    --text-hi:#F4F1EA;
+    --text-mid: rgba(244,241,234,0.72);
+    --text-low: rgba(244,241,234,0.46);
+    --display: 'Space Grotesk', sans-serif;
+    --body: 'Inter', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background: var(--bg);
+    color: var(--text-hi);
+    font-family: var(--body);
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+
+  /* ===== Layout shells ===== */
+  .wrap{max-width:1080px; margin:0 auto; padding:0 32px;}
+  section{padding:96px 0;}
+  @media (max-width:720px){
+    .wrap{padding:0 20px;}
+    section{padding:64px 0;}
+  }
+
+  /* ===== Background grid texture ===== */
+  .bg-grid{
+    position:fixed; inset:0; z-index:-1;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 0%, transparent 70%);
+    opacity:0.5;
+  }
+
+  /* ===== Nav ===== */
+  nav{
+    position:sticky; top:0; z-index:50;
+    backdrop-filter: blur(12px);
+    background: rgba(15,23,20,0.7);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height:72px;
+  }
+  .logo{
+    font-family:var(--display); font-weight:700; font-size:20px;
+    letter-spacing:0.02em;
+    display:flex; align-items:center; gap:10px;
+  }
+  .logo .dot{
+    width:10px; height:10px; border-radius:2px;
+    background: var(--teal-200);
+    transform: rotate(45deg);
+  }
+  .navlinks{display:flex; gap:36px; font-size:14px; color:var(--text-mid);}
+  .navlinks a{color:inherit; text-decoration:none; transition:color .2s;}
+  .navlinks a:hover{color:var(--text-hi);}
+  @media (max-width:640px){ .navlinks{display:none;} }
+
+  /* ===== Hero ===== */
+  .hero{padding-top:88px; padding-bottom:64px; position:relative;}
+  .eyebrow{
+    font-family:var(--mono); font-size:13px; color:var(--teal-200);
+    letter-spacing:0.12em; text-transform:uppercase;
+    display:flex; align-items:center; gap:10px; margin-bottom:24px;
+  }
+  .eyebrow::before{
+    content:''; display:block; width:28px; height:1px; background:var(--teal-400);
+  }
+  .hero h1{
+    font-family:var(--display); font-weight:700;
+    font-size:clamp(40px, 7vw, 76px);
+    line-height:1.05; letter-spacing:-0.01em;
+    max-width:780px;
+  }
+  .hero h1 .accent{color:var(--coral-200);}
+  .hero p.lead{
+    margin-top:24px; font-size:18px; color:var(--text-mid);
+    max-width:560px;
+  }
+  .hero-actions{display:flex; gap:16px; margin-top:40px; flex-wrap:wrap;}
+  .btn{
+    font-family:var(--body); font-weight:500; font-size:14px;
+    padding:14px 28px; border-radius:6px;
+    text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+    transition: transform .15s ease, background .2s ease, border-color .2s ease;
+    border:1px solid transparent;
+  }
+  .btn:active{transform: scale(0.98);}
+  .btn-primary{background:var(--teal-200); color:#04342C; font-weight:600;}
+  .btn-primary:hover{background:var(--teal-100);}
+  .btn-ghost{border-color:var(--line-strong); color:var(--text-hi);}
+  .btn-ghost:hover{border-color:var(--teal-200); color:var(--teal-200);}
+
+  /* ===== Device row ===== */
+  .device-row{
+    display:flex; gap:24px; margin-top:72px; padding-bottom:8px;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  .device-row::-webkit-scrollbar{display:none;}
+  .phone{
+    flex:0 0 auto;
+    width:172px; height:344px;
+    border-radius:22px;
+    border:1px solid var(--line-strong);
+    background: linear-gradient(180deg, var(--bg-elev), var(--bg-card));
+    position:relative;
+    overflow:hidden;
+    box-shadow: 0 24px 60px -24px rgba(0,0,0,0.6);
+  }
+  .phone .notch{
+    position:absolute; top:12px; left:50%; transform:translateX(-50%);
+    width:56px; height:6px; border-radius:4px; background: rgba(255,255,255,0.12);
+  }
+  .phone .screen{
+    position:absolute; top:32px; left:12px; right:12px; bottom:12px;
+    border-radius:10px;
+    display:flex; flex-direction:column; gap:8px; padding:14px;
+  }
+  .phone .bar{height:8px; border-radius:3px; background: rgba(255,255,255,0.10);}
+  .phone .bar.w60{width:60%;}
+  .phone .bar.w40{width:40%;}
+  .phone .bar.w80{width:80%;}
+  .phone .block{
+    flex:1; border-radius:8px; margin-top:8px;
+    display:grid; grid-template-columns:1fr 1fr; gap:6px; padding:6px;
+  }
+  .phone .block .tile{border-radius:6px;}
+  .phone.p-teal .block{background:rgba(29,158,117,0.08);}
+  .phone.p-teal .tile{background: rgba(29,158,117,0.18);}
+  .phone.p-coral .block{background:rgba(216,90,48,0.08);}
+  .phone.p-coral .tile{background: rgba(216,90,48,0.18);}
+  .phone.p-gray .block{background:rgba(255,255,255,0.04);}
+  .phone.p-gray .tile{background: rgba(255,255,255,0.08);}
+  .phone .tag{
+    font-family:var(--mono); font-size:10px; color:var(--text-low);
+    position:absolute; bottom:14px; left:18px; letter-spacing:0.06em;
+  }
+
+  /* ===== Section headings ===== */
+  .section-head{margin-bottom:48px;}
+  .section-head .eyebrow{margin-bottom:16px;}
+  .section-head h2{
+    font-family:var(--display); font-weight:700;
+    font-size:clamp(28px, 4vw, 40px);
+    letter-spacing:-0.01em;
+  }
+  .section-head p{color:var(--text-mid); margin-top:12px; max-width:520px; font-size:15px;}
+
+  /* ===== About / stack ===== */
+  .about-grid{
+    display:grid; grid-template-columns: 1.1fr 1fr; gap:64px; align-items:start;
+  }
+  @media (max-width:800px){ .about-grid{grid-template-columns:1fr; gap:40px;} }
+  .about-grid .copy p{color:var(--text-mid); font-size:16px; margin-bottom:16px;}
+  .about-grid .copy strong{color:var(--text-hi); font-weight:600;}
+
+  .stack-card{
+    background:var(--bg-card); border:1px solid var(--line);
+    border-radius:12px; padding:24px;
+  }
+  .stack-card h3{
+    font-family:var(--mono); font-size:12px; letter-spacing:0.1em;
+    text-transform:uppercase; color:var(--teal-200); margin-bottom:16px;
+  }
+  .pill-group{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px;}
+  .pill-group:last-child{margin-bottom:0;}
+  .pill{
+    font-family:var(--mono); font-size:12px; padding:6px 12px;
+    border-radius:5px; border:1px solid var(--line-strong);
+    color:var(--text-mid);
+  }
+
+  /* ===== Architecture layers (signature element) ===== */
+  .layers{
+    display:flex; flex-direction:column; gap:0;
+    border-radius:14px; overflow:hidden; border:1px solid var(--line-strong);
+  }
+  .layer{
+    padding:22px 28px;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:24px; flex-wrap:wrap;
+    border-bottom:1px solid var(--line);
+    position:relative;
+  }
+  .layer:last-child{border-bottom:none;}
+  .layer .l-name{font-family:var(--display); font-weight:700; font-size:20px;}
+  .layer .l-desc{font-size:14px; color:var(--text-mid); max-width:380px;}
+  .layer .l-tags{display:flex; gap:8px; flex-wrap:wrap;}
+  .layer .l-tags span{
+    font-family:var(--mono); font-size:11px; padding:4px 10px;
+    border-radius:4px; color:var(--text-hi); background:rgba(255,255,255,0.06);
+  }
+  .layer.presentation{background: linear-gradient(90deg, rgba(216,90,48,0.10), transparent);}
+  .layer.domain{background: linear-gradient(90deg, rgba(255,255,255,0.04), transparent);}
+  .layer.data{background: linear-gradient(90deg, rgba(29,158,117,0.10), transparent);}
+  .layer .l-num{
+    font-family:var(--mono); font-size:12px; color:var(--text-low);
+    position:absolute; top:14px; right:20px;
+  }
+
+  /* ===== Projects ===== */
+  .projects{display:flex; flex-direction:column; gap:24px;}
+  .project{
+    border:1px solid var(--line); border-radius:14px;
+    background:var(--bg-card);
+    display:grid; grid-template-columns: 220px 1fr; gap:0;
+    overflow:hidden;
+  }
+  @media (max-width:760px){ .project{grid-template-columns:1fr;} }
+  .project-visual{
+    background: var(--bg-elev);
+    border-right:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    padding:32px;
+    position:relative;
+  }
+  @media (max-width:760px){ .project-visual{border-right:none; border-bottom:1px solid var(--line); padding:28px;} }
+  .project-visual .icon-stack{
+    width:64px; height:64px; border-radius:14px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--display); font-weight:700; font-size:24px;
+  }
+  .icon-stack.teal{background: rgba(29,158,117,0.16); color:var(--teal-100);}
+  .icon-stack.coral{background: rgba(216,90,48,0.16); color:var(--coral-100);}
+  .icon-stack.gray{background: rgba(255,255,255,0.06); color:var(--text-mid);}
+
+  .project-body{padding:32px;}
+  .project-body .p-title{
+    font-family:var(--display); font-weight:700; font-size:22px; margin-bottom:8px;
+  }
+  .project-body .p-desc{color:var(--text-mid); font-size:15px; margin-bottom:18px; max-width:560px;}
+  .project-body ul{list-style:none; margin-bottom:18px;}
+  .project-body ul li{
+    font-size:14px; color:var(--text-mid); padding-left:18px; position:relative; margin-bottom:6px;
+  }
+  .project-body ul li::before{
+    content:''; position:absolute; left:0; top:9px;
+    width:6px; height:6px; border-radius:1px; background:var(--teal-400);
+    transform: rotate(45deg);
+  }
+  .project-body .p-tags{display:flex; flex-wrap:wrap; gap:8px;}
+  .project-body .p-tags span{
+    font-family:var(--mono); font-size:11px; padding:5px 10px; border-radius:4px;
+    border:1px solid var(--line-strong); color:var(--text-mid);
+  }
+  .project-body .p-link{
+    margin-top:18px; display:inline-flex; align-items:center; gap:6px;
+    font-size:13px; color:var(--teal-200); text-decoration:none;
+  }
+
+  /* ===== Timeline (education / certs) ===== */
+  .timeline{border-left:1px solid var(--line-strong); padding-left:32px; display:flex; flex-direction:column; gap:36px;}
+  .tl-item{position:relative;}
+  .tl-item::before{
+    content:''; position:absolute; left:-37px; top:4px;
+    width:11px; height:11px; border-radius:2px; transform:rotate(45deg);
+    background:var(--bg); border:1px solid var(--teal-200);
+  }
+  .tl-item .tl-meta{font-family:var(--mono); font-size:12px; color:var(--text-low); margin-bottom:6px;}
+  .tl-item h3{font-family:var(--display); font-weight:700; font-size:18px; margin-bottom:6px;}
+  .tl-item p{color:var(--text-mid); font-size:14px; max-width:540px;}
+  .tl-item .badge{
+    display:inline-block; margin-top:10px; font-family:var(--mono); font-size:11px;
+    padding:4px 10px; border-radius:4px; background:rgba(216,90,48,0.14); color:var(--coral-100);
+  }
+
+  /* ===== Contact / footer ===== */
+  .contact{
+    border-radius:18px; border:1px solid var(--line-strong);
+    background: linear-gradient(135deg, rgba(29,158,117,0.10), rgba(216,90,48,0.06));
+    padding:64px 48px; text-align:center;
+  }
+  @media (max-width:640px){ .contact{padding:48px 24px;} }
+  .contact h2{
+    font-family:var(--display); font-weight:700; font-size:clamp(28px,5vw,44px);
+    margin-bottom:16px;
+  }
+  .contact p{color:var(--text-mid); max-width:480px; margin:0 auto 32px; font-size:15px;}
+  .contact-actions{display:flex; gap:16px; justify-content:center; flex-wrap:wrap;}
+
+  footer{padding:40px 0 64px; text-align:center; color:var(--text-low); font-size:13px; font-family:var(--mono);}
+
+  /* ===== Reveal on scroll ===== */
+  .reveal{opacity:0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease;}
+  .reveal.in{opacity:1; transform:none;}
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1; transform:none; transition:none;}
+    html{scroll-behavior:auto;}
+  }
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+
+<nav>
+  <div class="wrap">
+    <div class="logo"><span class="dot"></span>Noran Sayed</div>
+    <div class="navlinks">
+      <a href="#work">Work</a>
+      <a href="#stack">Stack</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Android developer · Kotlin &amp; Java</div>
+    <h1>Native Android apps, built layer by <span class="accent">layer</span>.</h1>
+    <p class="lead">
+      I design and build Android applications with MVVM and Clean Architecture —
+      from the data layer up to the screen. Top Achiever, Route Academy Android
+      Development Diploma. B.Sc. Computer Science &amp; AI, Cairo University.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#work">View projects</a>
+      <a class="btn btn-ghost" href="#contact">Get in touch</a>
+    </div>
+
+    <div class="device-row">
+      <div class="phone p-teal">
+        <div class="notch"></div>
+        <div class="screen">
+          <div class="bar w60"></div>
+          <div class="bar w40"></div>
+          <div class="block">
+            <div class="tile"></div><div class="tile"></div>
+            <div class="tile"></div><div class="tile"></div>
+          </div>
+        </div>
+        <div class="tag">commerce.app</div>
+      </div>
+      <div class="phone p-coral">
+        <div class="notch"></div>
+        <div class="screen">
+          <div class="bar w80"></div>
+          <div class="bar w60"></div>
+          <div class="block">
+            <div class="tile"></div><div class="tile"></div>
+            <div class="tile"></div><div class="tile"></div>
+          </div>
+        </div>
+        <div class="tag">news.reader</div>
+      </div>
+      <div class="phone p-gray">
+        <div class="notch"></div>
+        <div class="screen">
+          <div class="bar w40"></div>
+          <div class="bar w60"></div>
+          <div class="block">
+            <div class="tile"></div><div class="tile"></div>
+            <div class="tile"></div><div class="tile"></div>
+          </div>
+        </div>
+        <div class="tag">portfolio.web</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="stack">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Toolbox</div>
+      <h2>The stack behind every build</h2>
+      <p>The libraries and patterns I reach for when turning a design into a working app.</p>
+    </div>
+
+    <div class="about-grid">
+      <div class="stack-card reveal">
+        <h3>Languages &amp; UI</h3>
+        <div class="pill-group">
+          <span class="pill">Kotlin</span>
+          <span class="pill">Java</span>
+          <span class="pill">Jetpack Compose</span>
+          <span class="pill">XML layouts</span>
+          <span class="pill">Material Design</span>
+        </div>
+        <h3>Architecture</h3>
+        <div class="pill-group">
+          <span class="pill">MVVM</span>
+          <span class="pill">Clean Architecture</span>
+          <span class="pill">Repository pattern</span>
+          <span class="pill">Single Activity</span>
+        </div>
+      </div>
+
+      <div class="stack-card reveal">
+        <h3>Jetpack &amp; async</h3>
+        <div class="pill-group">
+          <span class="pill">Room</span>
+          <span class="pill">Navigation</span>
+          <span class="pill">LiveData</span>
+          <span class="pill">ViewModel</span>
+          <span class="pill">WorkManager</span>
+          <span class="pill">Coroutines</span>
+          <span class="pill">Flow</span>
+        </div>
+        <h3>Networking &amp; backend</h3>
+        <div class="pill-group">
+          <span class="pill">Retrofit2</span>
+          <span class="pill">OkHttp</span>
+          <span class="pill">Hilt</span>
+          <span class="pill">Firebase</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="architecture">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Signature approach</div>
+      <h2>Every app, three layers deep</h2>
+      <p>Clean Architecture keeps each concern in its place — easier to test, easier to change.</p>
+    </div>
+
+    <div class="layers reveal">
+      <div class="layer presentation">
+        <span class="l-num">layer 01</span>
+        <div>
+          <div class="l-name">Presentation</div>
+          <div class="l-desc">Fragments, Compose screens and ViewModels — what the user sees and taps.</div>
+        </div>
+        <div class="l-tags">
+          <span>MVVM</span><span>LiveData</span><span>Navigation</span>
+        </div>
+      </div>
+      <div class="layer domain">
+        <span class="l-num">layer 02</span>
+        <div>
+          <div class="l-name">Domain</div>
+          <div class="l-desc">Use cases and business rules — independent of any framework.</div>
+        </div>
+        <div class="l-tags">
+          <span>Use cases</span><span>Kotlin</span>
+        </div>
+      </div>
+      <div class="layer data">
+        <span class="l-num">layer 03</span>
+        <div>
+          <div class="l-name">Data</div>
+          <div class="l-desc">Repositories combining the network and local cache into one source of truth.</div>
+        </div>
+        <div class="l-tags">
+          <span>Retrofit</span><span>Room</span><span>Firebase</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="work">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Selected work</div>
+      <h2>Projects</h2>
+      <p>A look at what I've shipped — from a full e-commerce app to a portfolio site.</p>
+    </div>
+
+    <div class="projects">
+      <div class="project reveal">
+        <div class="project-visual"><div class="icon-stack teal"><i class="ti ti-shopping-cart" style="font-size:28px;" aria-hidden="true"></i></div></div>
+        <div class="project-body">
+          <div class="p-title">E-commerce Android app</div>
+          <p class="p-desc">A full-featured native shopping app with product listing, search, cart management and order tracking, built on Clean Architecture's three layers.</p>
+          <ul>
+            <li>Retrofit2 + Kotlin Coroutines for asynchronous REST calls, keeping the UI responsive</li>
+            <li>Room database caches data locally for a seamless offline experience</li>
+            <li>Hilt-based dependency injection reduces boilerplate and improves modularity</li>
+          </ul>
+          <div class="p-tags">
+            <span>Kotlin</span><span>MVVM</span><span>Retrofit2</span><span>Room</span><span>Hilt</span><span>Coroutines</span><span>Firebase</span>
+          </div>
+          <a class="p-link" href="https://github.com/NoranSayed" target="_blank" rel="noopener">View on GitHub <i class="ti ti-arrow-right" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div class="project reveal">
+        <div class="project-visual"><div class="icon-stack coral"><i class="ti ti-news" style="font-size:28px;" aria-hidden="true"></i></div></div>
+        <div class="project-body">
+          <div class="p-title">News reader app</div>
+          <p class="p-desc">A news aggregator that pulls categorised, real-time headlines from a public REST API into a smooth, lifecycle-aware feed.</p>
+          <ul>
+            <li>Single-activity architecture with Navigation Component across multiple fragments</li>
+            <li>MVVM with LiveData and ViewModel for reactive UI updates</li>
+            <li>Room caches articles so headlines stay readable offline</li>
+          </ul>
+          <div class="p-tags">
+            <span>Kotlin</span><span>MVVM</span><span>LiveData</span><span>Retrofit2</span><span>Navigation</span><span>Room</span>
+          </div>
+          <a class="p-link" href="https://github.com/NoranSayed" target="_blank" rel="noopener">View on GitHub <i class="ti ti-arrow-right" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div class="project reveal">
+        <div class="project-visual"><div class="icon-stack gray"><i class="ti ti-id-badge-2" style="font-size:28px;" aria-hidden="true"></i></div></div>
+        <div class="project-body">
+          <div class="p-title">Personal portfolio website</div>
+          <p class="p-desc">A responsive site showcasing Android projects and skills, deployed and maintained on GitHub Pages.</p>
+          <ul>
+            <li>Responsive layout tested across devices and browsers</li>
+            <li>Built with plain HTML5, CSS3 and JavaScript</li>
+          </ul>
+          <div class="p-tags">
+            <span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>Responsive design</span>
+          </div>
+          <a class="p-link" href="https://github.com/NoranSayed" target="_blank" rel="noopener">View on GitHub <i class="ti ti-arrow-right" aria-hidden="true"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Background</div>
+      <h2>Education &amp; certifications</h2>
+    </div>
+
+    <div class="timeline reveal">
+      <div class="tl-item">
+        <div class="tl-meta">2024 — May 2026</div>
+        <h3>Android Development Diploma, Route Academy</h3>
+        <p>An intensive, hands-on diploma covering Kotlin, Java and the full Android SDK ecosystem — MVVM, Jetpack libraries, Retrofit, Room, Hilt, Coroutines, Firebase and performance optimisation, plus HTML5, CSS3 and JavaScript for cross-platform awareness.</p>
+        <span class="badge">Top achiever</span>
+      </div>
+      <div class="tl-item">
+        <div class="tl-meta">2020 — 2024</div>
+        <h3>B.Sc. Computer Science &amp; Artificial Intelligence, Cairo University</h3>
+        <p>Faculty of Computers and Artificial Intelligence. Coursework spanned data structures &amp; algorithms, object-oriented programming, software engineering, database systems, operating systems and AI fundamentals.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="contact reveal">
+      <h2>Let's build something for Android</h2>
+      <p>Open to Android developer roles where clean architecture, careful UX and reliable apps matter.</p>
+      <div class="contact-actions">
+        <a class="btn btn-primary" href="mailto:nouransayed702@gmail.com">Email me</a>
+        <a class="btn btn-ghost" href="https://github.com/NoranSayed" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn btn-ghost" href="https://linkedin.com/in/noran-sayed" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>Cairo, Egypt — built with care, layer by layer</footer>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/@tabler/icons-webfont/3.31.0/tabler-icons.min.css">
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
